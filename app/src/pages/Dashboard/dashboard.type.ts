@@ -9,5 +9,5 @@ export interface Todo {
 /** モーダルオブジェクトの型 */
 export type Modal = {
     isShow: boolean,
-    type: 'add' | 'edit',
+    todoId: number,
 }

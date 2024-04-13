@@ -1,11 +1,11 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Todo } from "../dashboard.type";
 import { Card } from "react-bootstrap";
+import { useAtomValue, useSetAtom } from "jotai";
+import { modalAtom, todosAtom } from "../atom";
 
 const StyledCardWrap = styled.div`
     display: flex;
-    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
     margin: 30px auto;
@@ -31,19 +31,32 @@ const StyledCardBody = styled(Card.Body)`
     overflow: hidden;
 `
 
-type Props = {
-    todos: Todo[];
-};
-
-const TodoItem: React.FC<Props> = ({ todos }) => {
-
+const TodoItem: React.FC = () => {
+    const todos = useAtomValue(todosAtom);
+    const setModal = useSetAtom(modalAtom);
     return (
         <StyledCardWrap>
             {todos?.map((todo, index) => (
-                <StyledLabel htmlFor={`todo-card-${index}`}>
+                <StyledLabel
+                    htmlFor={`todo-card-${index}`}
+                    onClick={() => {
+                        setModal({
+                            isShow: true,
+                            todoId: todo.id,
+                        })
+                    }}
+                >
                     <Card border={todo.isCompleted ? 'primary' : ''}>
-                        <input type="checkbox" id={`todo-card-${index}`} hidden />
-                        <StyledCardHeader isCompleted={todo.isCompleted}>{todo.title}</StyledCardHeader>
+                        <input
+                            type="checkbox"
+                            id={`todo-card-${index}`}
+                            hidden
+                        />
+                        <StyledCardHeader
+                            isCompleted={todo.isCompleted}
+                        >
+                            {todo.title}
+                        </StyledCardHeader>
                         <StyledCardBody>
                             {todo.description}
                         </StyledCardBody>
