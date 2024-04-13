@@ -12,21 +12,35 @@ dockerを使用するため、[Docker Desktop](https://www.docker.com/ja-jp/prod
 
 開発を行うディレクトリに移動し、ターミナルで以下コマンドを実行
 
-`git clone https://github.com/ryuheimasukawa/react-todo.git`
+```
+git clone https://github.com/ryuheimasukawa/react-todo.git
+```
 
-クローンが完了したら以下コマンドを順番に実行
+### クローンが完了したら以下コマンドを順番に実行（Docker Desktopを起動しておくこと）
+
+ディレクトリ移動
 
 ```
-// ディレクトリ移動
 cd react-todo/app
+```
 
-// コンテナをビルド
+コンテナをビルド
+
+```
 make build
+```
 
-// node packageをインストール
+node packageをインストール
+
+```
 npm install
 ```
 
-最後に以下コマンドでローカル環境を立ち上げ、画面が表示されたら完了
+ローカル環境を起動
 
-`make up`
+```
+make up
+```
+
+http://localhost:3000/ にアクセスし、画面が出れば完了
+
