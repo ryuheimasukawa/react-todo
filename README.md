@@ -3,7 +3,9 @@
 ## 準備
 
 dockerを使用するため、[Docker Desktop](https://www.docker.com/ja-jp/products/docker-desktop/)をインストール
+
 アカウントの作成は不要、アプリダウンロード後起動できればOK
+
 ※インストール済みの場合はスキップ
 
 ## リポジトリをクローン
