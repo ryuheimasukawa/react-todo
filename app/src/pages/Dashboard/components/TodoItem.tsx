@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { Card } from "react-bootstrap";
-import { useAtomValue, useSetAtom } from "jotai";
-import { modalAtom, todosAtom } from "../atom";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { editTodoModalAtom, selectedTodoIdAtom, todosAtom } from "../atom";
+import EditTodoModal from "./EditTodoModal";
 
 const StyledCardWrap = styled.div`
     display: flex;
@@ -18,10 +19,10 @@ const StyledLabel = styled.label`
     }
     `
 
-const StyledCardHeader = styled(Card.Header) <{ isCompleted: boolean }>`
+const StyledCardHeader = styled(Card.Header) <{ completed: boolean }>`
     height: 40px;
 
-    ${(props) => props.isCompleted && css`
+    ${(props) => props.completed && css`
         text-decoration: line-through;
     `}
 `
@@ -33,36 +34,41 @@ const StyledCardBody = styled(Card.Body)`
 
 const TodoItem: React.FC = () => {
     const todos = useAtomValue(todosAtom);
-    const setModal = useSetAtom(modalAtom);
+    const [isEditModal, setIsEditModal] = useAtom(editTodoModalAtom);
+    const [selectedTodoId, setSelectedTodoId] = useAtom(selectedTodoIdAtom);
     return (
         <StyledCardWrap>
             {todos?.map((todo, index) => (
-                <StyledLabel
-                    htmlFor={`todo-card-${index}`}
-                    onClick={() => {
-                        setModal({
-                            isShow: true,
-                            todoId: todo.id,
-                        })
-                    }}
-                >
-                    <Card border={todo.isCompleted ? 'primary' : ''}>
-                        <input
-                            type="checkbox"
-                            id={`todo-card-${index}`}
-                            hidden
-                        />
-                        <StyledCardHeader
-                            isCompleted={todo.isCompleted}
-                        >
-                            {todo.title}
-                        </StyledCardHeader>
-                        <StyledCardBody>
-                            {todo.description}
-                        </StyledCardBody>
-                    </Card>
-                </StyledLabel>
+                <>
+                    <StyledLabel
+                        htmlFor={`todo-card-${index}`}
+                        onClick={() => {
+                            setSelectedTodoId(todo.id);
+                            setIsEditModal(true);
+                        }}
+                        key={index}
+                    >
+                        <Card border={todo.isCompleted ? 'primary' : ''}>
+                            <input
+                                type="checkbox"
+                                id={`todo-card-${index}`}
+                                hidden
+                            />
+                            <StyledCardHeader
+                                completed={todo.isCompleted}
+                            >
+                                {todo.title}
+                            </StyledCardHeader>
+                            <StyledCardBody>
+                                {todo.description}
+                            </StyledCardBody>
+                        </Card>
+                    </StyledLabel>
+                </>
             ))}
+            <EditTodoModal
+                isShow={isEditModal}
+            />
         </StyledCardWrap>
     );
 }

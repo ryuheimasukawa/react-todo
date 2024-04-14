@@ -5,9 +5,3 @@ export interface Todo {
     description: string;
     isCompleted: boolean;
 }
-
-/** モーダルオブジェクトの型 */
-export type Modal = {
-    isShow: boolean,
-    todoId: number,
-}

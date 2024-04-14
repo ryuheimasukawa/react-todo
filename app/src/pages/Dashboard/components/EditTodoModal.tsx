@@ -1,49 +1,32 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Modal, Form, Button } from "react-bootstrap";
-import { Todo } from "../dashboard.type";
-import { useAtom } from "jotai";
-import { addTodoModalAtom, todosAtom } from '../atom';
+import React from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import { StyledButtonWrap } from "../style";
+import UseEditTodo from "../hooks/UseEditTodo";
 
-const TodoModal: React.FC = () => {
-    const [todos, setTodos] = useAtom(todosAtom);
-    const [isShowModal, setIsShowModal] = useAtom(addTodoModalAtom);
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
+type Props = {
+    isShow: boolean;
+}
 
-    const handleClose = useCallback(() => {
-        setIsShowModal(false);
-        setTitle('');
-        setDescription('');
-    }, []);
-
-    const handleSubmit = () => {
-        if (!title) {
-            // タイトルが空なら処理を止める
-            return;
-        }
-
-        const value: Todo = {
-            id: todos.length + 1,
-            title: title,
-            description: description,
-            isCompleted: false,
-        };
-
-        // todoを登録
-        setTodos([...todos, value]);
-        // モーダルを閉じる
-        handleClose();
-    };
+const EditTodoModal: React.FC<Props> = ({ isShow }) => {
+    const {
+        setIsEditModal,
+        title,
+        setTitle,
+        description,
+        setDescription,
+        handleClose,
+        handleDelete,
+        handleEdit,
+    } = UseEditTodo();
 
     return (
         <Modal
             centered
-            show={isShowModal}
-            onHide={handleClose}
+            show={isShow}
+            onHide={() => setIsEditModal(false)}
         >
             <Modal.Header closeButton>
-                <Modal.Title>TODO追加</Modal.Title>
+                <Modal.Title>編集</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -70,6 +53,13 @@ const TodoModal: React.FC = () => {
                     <StyledButtonWrap>
                         <Button
                             style={{ marginRight: '10px' }}
+                            variant="danger"
+                            onClick={handleDelete}
+                        >
+                            削除
+                        </Button>
+                        <Button
+                            style={{ marginRight: '10px' }}
                             variant="secondary"
                             onClick={handleClose}
                         >
@@ -78,9 +68,9 @@ const TodoModal: React.FC = () => {
                         <Button
                             variant="primary"
                             disabled={!Boolean(title)}
-                            onClick={handleSubmit}
+                            onClick={handleEdit}
                         >
-                            追加
+                            保存
                         </Button>
                     </StyledButtonWrap>
                 </Form>
@@ -88,5 +78,4 @@ const TodoModal: React.FC = () => {
         </Modal>
     );
 }
-TodoModal.displayName = 'TodoModal';
-export default TodoModal;
+export default EditTodoModal;
