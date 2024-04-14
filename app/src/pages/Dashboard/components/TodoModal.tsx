@@ -1,40 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
-import { Todo } from "../dashboard.type";
-import { useAtom } from "jotai";
-import { addTodoModalAtom, todosAtom } from '../atom';
+import { useAtomValue } from "jotai";
+import { addTodoModalAtom } from '../atom';
 import { StyledButtonWrap } from "../style";
+import UseAddTodo from "../hooks/UseAddTodo";
 
 const TodoModal: React.FC = () => {
-    const [todos, setTodos] = useAtom(todosAtom);
-    const [isShowModal, setIsShowModal] = useAtom(addTodoModalAtom);
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
+    const {
+        title,
+        setTitle,
+        description,
+        setDescription,
+        handleClose,
+        handleSubmit,
+    } = UseAddTodo();
 
-    const handleClose = useCallback(() => {
-        setIsShowModal(false);
-        setTitle('');
-        setDescription('');
-    }, []);
-
-    const handleSubmit = () => {
-        if (!title) {
-            // タイトルが空なら処理を止める
-            return;
-        }
-
-        const value: Todo = {
-            id: todos.length + 1,
-            title: title,
-            description: description,
-            isCompleted: false,
-        };
-
-        // todoを登録
-        setTodos([...todos, value]);
-        // モーダルを閉じる
-        handleClose();
-    };
+    const isShowModal = useAtomValue(addTodoModalAtom);
 
     return (
         <Modal

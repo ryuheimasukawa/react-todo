@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { Card } from "react-bootstrap";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -35,7 +35,7 @@ const StyledCardBody = styled(Card.Body)`
 const TodoItem: React.FC = () => {
     const todos = useAtomValue(todosAtom);
     const [isEditModal, setIsEditModal] = useAtom(editTodoModalAtom);
-    const [selectedTodoId, setSelectedTodoId] = useAtom(selectedTodoIdAtom);
+    const setSelectedTodoId = useSetAtom(selectedTodoIdAtom);
     return (
         <StyledCardWrap>
             {todos?.map((todo, index) => (
