@@ -2,33 +2,38 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Routes
 } from "react-router-dom";
-import Dashbord from '../src/pages/Dashbord';
+import Dashboard from '../src/pages/Dashboard';
 import Login from '../src/pages/Login';
+import Layout from '../src/components/leyouts/SideMenu'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from 'jotai';
 
 function App() {
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">dashbord</Link>
-            </li>
-            <li>
-              <Link to="/login">login</Link>
-            </li>
-          </ul>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<Dashbord />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </div>
-    </Router>
+    <Provider>
+      <Layout>
+        <Router>
+          <div>
+            {/* <nav>
+              <ul>
+                <li>
+                  <Link to="/">dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/login">login</Link>
+                </li>
+              </ul>
+            </nav> */}
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </div>
+        </Router>
+      </Layout>
+    </Provider>
   );
 }
 
