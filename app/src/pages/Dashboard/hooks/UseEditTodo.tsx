@@ -57,7 +57,6 @@ const UseEditTodo = () => {
     };
 
     return {
-        setIsEditModal,
         title,
         setTitle,
         description,

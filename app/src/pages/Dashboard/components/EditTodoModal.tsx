@@ -2,6 +2,8 @@ import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { StyledButtonWrap } from "../style";
 import UseEditTodo from "../hooks/UseEditTodo";
+import { useSetAtom } from "jotai";
+import { editTodoModalAtom } from "../atom";
 
 type Props = {
     isShow: boolean;
@@ -9,7 +11,6 @@ type Props = {
 
 const EditTodoModal: React.FC<Props> = ({ isShow }) => {
     const {
-        setIsEditModal,
         title,
         setTitle,
         description,
@@ -18,6 +19,8 @@ const EditTodoModal: React.FC<Props> = ({ isShow }) => {
         handleDelete,
         handleEdit,
     } = UseEditTodo();
+
+    const setIsEditModal = useSetAtom(editTodoModalAtom);
 
     return (
         <Modal
